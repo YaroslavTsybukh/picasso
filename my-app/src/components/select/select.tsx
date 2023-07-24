@@ -1,16 +1,38 @@
-import { useState , useEffect} from "react";
+import { useState } from "react";
 import { Select , SelectChangeEvent , InputLabel , MenuItem , FormControl} from "@mui/material";
 import { UsersService } from "../../services/users.service";
+import { useQuery , useMutation } from "@tanstack/react-query";
 
 export const SelectComponent = () => {
-    const [age , setAge] = useState()
+    const [userId , setUserId] = useState<number>(0)
     const { getUsers } = UsersService
+    const { isLoading , data , isError} = useQuery(
+        ['users'] ,
+         () => UsersService.getUsers(),
+        {
+            retry: false,
+            keepPreviousData: true,
+            refetchOnWindowFocus: false
+        }
+    )
 
-    console.log(getUsers())
+    const mutation = useMutation(
+        (userId:number) => UsersService.getUserPost(userId),
+        {
+            onSuccess: () => alert('success')
+        }
+    )
 
     const handleChange = (e: SelectChangeEvent) => {
-        setAge(e.target.value);
+        mutation.mutate(e.target.value)
+        setUserId(e.target.value)
     };
+
+    if(isLoading) {
+        return <div>...Loading</div>
+    } else if (isError) {
+        return <div>Ooops , mistake(</div>
+    }
 
     return (
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
@@ -18,16 +40,19 @@ export const SelectComponent = () => {
             <Select
                 labelId="demo-simple-select-standard-label"
                 id="demo-simple-select-standard"
-                value={age}
+                defaultValue={'Default Value'}
                 onChange={handleChange}
                 label="Age"
             >
                 <MenuItem value="">
                     <em>None</em>
                 </MenuItem>
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+
+                { data ?
+                    data.map(item => (
+                        <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
+                    )) : null
+                }
             </Select>
         </FormControl>
     )

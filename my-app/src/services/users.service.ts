@@ -1,15 +1,24 @@
 import axios from "axios";
 
-const _apiBase = "https://jsonplaceholder.typicode.com/users"
+axios.defaults.baseURL = "https://jsonplaceholder.typicode.com/";
 
 export const UsersService = {
     async getUsers() {
-        const response = await axios.get(_apiBase , {
+        const {data} = await axios.get('users', {
             headers: {
-                "Content-Type": 'application/json'
+                'Content-Type': 'application/json'
             }
         })
 
-        return response.data
+        return data
+    },
+    async getUserPost(id:number) {
+        const { data } = await axios.get(`posts/${id}` , {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+
+        return data
     }
 }
