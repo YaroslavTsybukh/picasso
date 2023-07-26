@@ -1,12 +1,16 @@
-import { useState } from "react";
 import { Select , SelectChangeEvent , InputLabel , MenuItem , FormControl} from "@mui/material";
 import { UsersService } from "../../services/users.service";
-import { useQuery , useMutation } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
-export const SelectComponent = () => {
-    const [userId , setUserId] = useState<number>(0)
-    const { getUsers } = UsersService
-    const { isLoading , data , isError} = useQuery(
+
+interface IUserPost {
+    setUserId: (value: number) => void
+}
+
+export const SelectComponent = ({setUserId}: IUserPost) => {
+    // const [userId , setUserId] = useState<number|null>(null)
+
+    const { data: userResponse } = useQuery(
         ['users'] ,
          () => UsersService.getUsers(),
         {
@@ -16,23 +20,16 @@ export const SelectComponent = () => {
         }
     )
 
-    const mutation = useMutation(
-        (userId:number) => UsersService.getUserPost(userId),
-        {
-            onSuccess: () => alert('success')
-        }
-    )
-
     const handleChange = (e: SelectChangeEvent) => {
-        mutation.mutate(e.target.value)
-        setUserId(e.target.value)
+        // mutation.mutate(Number(e.target.value))
+        setUserId(Number(e.target.value))
     };
 
-    if(isLoading) {
-        return <div>...Loading</div>
-    } else if (isError) {
-        return <div>Ooops , mistake(</div>
-    }
+    // if(isLoading || isLoadingUserPost) {
+    //     return <div>...Loading</div>
+    // } else if (isError || isErrorUserPost) {
+    //     return <div>Ooops , mistake(</div>
+    // }
 
     return (
         <FormControl variant="standard" sx={{ minWidth: 120 }}>
@@ -48,8 +45,8 @@ export const SelectComponent = () => {
                     <em>None</em>
                 </MenuItem>
 
-                { data ?
-                    data.map(item => (
+                { userResponse ?
+                    userResponse.map((item: any) => (
                         <MenuItem key={item.id} value={item.id}>{item.name}</MenuItem>
                     )) : null
                 }

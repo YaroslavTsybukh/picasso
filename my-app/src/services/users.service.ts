@@ -1,6 +1,8 @@
 import axios from "axios";
+import { IUserPost } from "../shared/userPosts.interface.ts";
 
 axios.defaults.baseURL = "https://jsonplaceholder.typicode.com/";
+
 
 export const UsersService = {
     async getUsers() {
@@ -12,8 +14,8 @@ export const UsersService = {
 
         return data
     },
-    async getUserPost(id:number) {
-        const { data } = await axios.get(`posts/${id}` , {
+    async getUserPosts(id:number) {
+        const { data } = await axios.get<IUserPost[]>(`posts/?userId=${id}` , {
             headers: {
                 'Content-Type': 'application/json'
             }
