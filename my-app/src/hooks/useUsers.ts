@@ -2,7 +2,7 @@ import {useQuery} from "@tanstack/react-query";
 import {UsersService} from "../services/users.service.ts";
 
 export const useUsers = () => {
-    const { data } = useQuery(
+    return useQuery(
         ['users'] ,
         () => UsersService.getUsers(),
         {
@@ -11,6 +11,4 @@ export const useUsers = () => {
             refetchOnWindowFocus: false
         }
     )
-
-    return { data }
 }

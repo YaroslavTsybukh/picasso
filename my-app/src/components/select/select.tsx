@@ -1,24 +1,9 @@
+import { useContext } from "react";
+import { UserInfoContext } from "../../context/appContextProvider.tsx";
 import { Select , SelectChangeEvent , InputLabel , MenuItem , FormControl} from "@mui/material";
-import { UsersService } from "../../services/users.service";
-import { useQuery } from "@tanstack/react-query";
 
-
-interface IUserPost {
-    setUserId: (value: number) => void
-}
-
-export const SelectComponent = ({setUserId}: IUserPost) => {
-    // const [userId , setUserId] = useState<number|null>(null)
-
-    const { data: userResponse } = useQuery(
-        ['users'] ,
-         () => UsersService.getUsers(),
-        {
-            retry: false,
-            keepPreviousData: true,
-            refetchOnWindowFocus: false
-        }
-    )
+export const SelectComponent = () => {
+    const { users: userResponse , setUserId } = useContext(UserInfoContext)
 
     const handleChange = (e: SelectChangeEvent) => {
         // mutation.mutate(Number(e.target.value))

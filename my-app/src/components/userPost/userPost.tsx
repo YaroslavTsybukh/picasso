@@ -1,23 +1,33 @@
-import { IUserPost } from "../../shared/userPosts.interface.ts";
-import { Typography, CardActions, CardContent , Button , Card } from '@mui/material';
+import { useUserPost } from "../../hooks";
+import { useParams } from "react-router-dom";
+import { Box , CircularProgress , Card , Typography , CardContent} from "@mui/material";
+import Grid from '@mui/material/Unstable_Grid2';
 
+export const UserPost = () => {
+    const params = useParams()
+    const { data: postResponse  , isLoading} = useUserPost(params.postId!)
 
-export const UserPost = (props: IUserPost) => {
-    const { body, title  } = props
-
-    const handleClick = () => {
-        console.log(1)
+    if(isLoading) {
+        return (
+                <Box sx={{display : 'flex' , justifyContent: 'center' , height: '100%' , alignItems: 'center'}}>
+                    <CircularProgress />
+                </Box>
+            )
     }
 
     return (
-        <Card sx={{ minWidth: 275 }}>
-            <CardContent>
-                <Typography sx={{ fontSize: '20px' , fontWeight: 'bold'}} gutterBottom={true} variant={'h2'}>{title}</Typography>
-                <Typography sx={{ fontSize: '18px'}} paragraph={true}>{body}</Typography>
-            </CardContent>
-            <CardActions>
-                <Button onClick={handleClick    } size="small">Learn More</Button>
-            </CardActions>
-        </Card>
+        <Grid xs={5}>
+            <Card>
+                <CardContent>
+                    {
+                        postResponse ? (
+                                <>
+                                    <Typography sx={{ fontSize: '20px' , fontWeight: 'bold'}} variant={'h2'} >{postResponse.title}</Typography>
+                                    <Typography sx={{ fontSize: '18px', margin: '20px 0 0'}} paragraph={true}>{postResponse.body}</Typography>
+                                </> ) : null
+                    }
+                </CardContent>
+            </Card>
+        </Grid>
     )
 }

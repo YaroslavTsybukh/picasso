@@ -1,13 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { UsersService } from "../services/users.service.ts";
 
-export const useUserPost = (id:string) => {
+export const useUserPosts = (userId: number) => {
+
     return useQuery(
-        ['userPost' , id],
-        () => UsersService.getUserPost(id)
-        , {
+        ['userPosts' , userId],
+        () => UsersService.getUserPosts(userId),
+        {
             retry: false,
+            keepPreviousData: true,
             refetchOnWindowFocus: false,
+            enabled: !!userId
         }
     )
 }

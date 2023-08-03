@@ -1,26 +1,97 @@
 import axios from "axios";
-import { IUserPost } from "../shared/userPosts.interface.ts";
+import { IUser , IUserPost } from "../shared/userInfo.interface.ts";
+import { IPostComment } from "../shared/postComments.interface.ts";
 
 axios.defaults.baseURL = "https://jsonplaceholder.typicode.com/";
 
-
 export const UsersService = {
-    async getUsers() {
-        const {data} = await axios.get('users', {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+    async getUsers(): Promise<IUser[] | undefined> {
+        try {
+            const {data} = await axios.get('users', {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
 
-        return data
+            return data
+
+        } catch(e) {
+            if(e instanceof Error) {
+                console.log(e.message)
+            } else if(typeof e == 'string') {
+                console.log(e)
+            }
+        }
+
     },
-    async getUserPosts(id:number) {
-        const { data } = await axios.get<IUserPost[]>(`posts/?userId=${id}` , {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+    async getUser (id: number): Promise<IUser | undefined> {
+        try {
+            const { data } = await axios.get(`users/${id}` , {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
 
-        return data
+            return data
+
+        }catch(e) {
+            if(e instanceof Error) {
+                console.log(e.message)
+            } else if(typeof e == 'string') {
+                console.log(e)
+            }
+        }
+    },
+    async getUserPosts(id:number): Promise<IUserPost[] | undefined> {
+        try {
+            const { data } = await axios.get(`posts/?userId=${id}` , {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            return data
+
+        } catch(e) {
+            if(e instanceof Error) {
+                console.log(e.message)
+            }
+        }
+    },
+    async getUserPost(id: string): Promise<IUserPost | undefined> {
+        try {
+            const { data } = await axios.get(`posts/${id}` , {
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            })
+
+            return data
+        }catch(e) {
+
+            if(e instanceof Error) {
+                console.log(e.message)
+            } else if(typeof e == "string") {
+                console.log(e)
+            }
+        }
+    },
+    async getCommentsPost(id:string): Promise<IPostComment[] | undefined> {
+        try {
+            const { data } = await axios.get(`post/${id}/comments` , {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+
+            return data
+
+        }catch(e) {
+            if(e instanceof Error){
+                console.log(e.message)
+            } else if(typeof e == 'string') {
+                console.log(e)
+            }
+        }
     }
 }
