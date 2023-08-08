@@ -1,9 +1,8 @@
 import { useUserPost } from "../../hooks";
 import { useParams } from "react-router-dom";
-import { Box , Card , Typography , CardContent} from "@mui/material";
+import { Card , Typography , CardContent} from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
 import { ProgressBar } from "../progressBar/progressBar.tsx";
-import {isError} from "@tanstack/react-query";
 
 export const UserPost = () => {
     const params = useParams()

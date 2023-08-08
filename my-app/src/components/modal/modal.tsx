@@ -2,7 +2,7 @@ import { useState } from 'react';
 import {Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle, Box} from '@mui/material';
 import { useForm  , Controller , SubmitHandler} from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
-import {isError, useMutation} from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { CommentsService } from "../../services/comments.service.ts";
 import { useParams } from "react-router-dom";
 import { CreateComment } from "../../shared/comments.interface.ts";
