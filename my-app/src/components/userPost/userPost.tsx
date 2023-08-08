@@ -1,18 +1,16 @@
 import { useUserPost } from "../../hooks";
 import { useParams } from "react-router-dom";
-import { Box , CircularProgress , Card , Typography , CardContent} from "@mui/material";
+import { Box , Card , Typography , CardContent} from "@mui/material";
 import Grid from '@mui/material/Unstable_Grid2';
+import { ProgressBar } from "../progressBar/progressBar.tsx";
+import {isError} from "@tanstack/react-query";
 
 export const UserPost = () => {
     const params = useParams()
     const { data: postResponse  , isLoading} = useUserPost(params.postId!)
 
     if(isLoading) {
-        return (
-                <Box sx={{display : 'flex' , justifyContent: 'center' , height: '100%' , alignItems: 'center'}}>
-                    <CircularProgress />
-                </Box>
-            )
+        return <ProgressBar />
     }
 
     return (

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { IUser , IUserPost } from "../shared/userInfo.interface.ts";
-import { IPostComment } from "../shared/postComments.interface.ts";
+import { IPostComment } from "../shared/comments.interface.ts";
 
 axios.defaults.baseURL = "https://jsonplaceholder.typicode.com/";
 

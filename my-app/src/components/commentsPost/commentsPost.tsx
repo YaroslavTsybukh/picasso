@@ -8,7 +8,6 @@ export const CommentsPost = () => {
 
     return (
         <>
-            <Typography sx={{ fontSize: '20px' , fontWeight: 'bold' , margin: "20px 0"}} variant={'h1'}>Comments from users</Typography>
             {
                 postComments ?
                 postComments.map( ({ id, name , body , email}) => (
